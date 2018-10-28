@@ -1,4 +1,5 @@
 import pyglet
+import pymunk
 from InputHandler import PlayerControl
 from GameObjects import PlayerShip
 global GameWindow # TODO - Get rid of this horrible global variable. It may not be needed at all anyway.
@@ -15,6 +16,8 @@ class GameWindow(pyglet.window.Window):
         self.foreground_batch = pyglet.graphics.Batch()
         self.background_batch = pyglet.graphics.Batch()
         self.player_control = PlayerControl(self)
+        self.space = pymunk.Space()
+        self.space.damping = 0.1    # Effectively drag/friction for space... stupid but makes control feel nicer.
         super().__init__(**kwargs)
 
     def on_draw(self):
@@ -27,6 +30,9 @@ class GameWindow(pyglet.window.Window):
 
     # Main update function that serves as the game's main loop.
     def master_update(self, dt):
+
+        # Advance our physics simulation.
+        self.space.step(dt)
 
         for game_object in self.UpdateList:
             game_object.update(self, dt)
@@ -48,6 +54,7 @@ def init():
     window.player = PlayerShip(img=pyglet.resource.image("potato.png"))
     window.player.batch = window.foreground_batch
     window.register_for_update(window.player)
+    window.player.add_to_space(window.space)
 
     # Kick off the Game's control loop.
     pyglet.clock.schedule_interval(window.master_update, 1 / 120.0)
