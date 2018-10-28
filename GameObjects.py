@@ -11,9 +11,8 @@ class GameObject(pyglet.sprite.Sprite):
         self.body = pymunk.Body(moment=0,mass=0)
         self.body.position = (100, 100)
         self.space = space
-        self.mass = mass
         self.update_shape()
-
+        self.mass = mass
 
         # TODO - Add a default shape?
 
@@ -43,13 +42,13 @@ class GameObject(pyglet.sprite.Sprite):
         else:
             radius = self.width // 2
 
-        if hasattr(self, 'shape'):
-            self.space.remove(self.shape) # NOTE: You MUST remove the shape from the space first or it will fail!
-            self.body.shapes.remove(self.shape)
-
         new_shape = pymunk.shapes.Circle(body=self.body, radius=radius)
         new_shape.mass = self.mass
         new_shape.color = (255, 0, 0, 100)
+
+        if hasattr(self, 'shape') and self.shape in self.space.bodies:
+            self.space.remove(self.shape)
+            print("Removed Shape")
 
         self.shape = new_shape
         self.add_to_space()
@@ -58,6 +57,7 @@ class GameObject(pyglet.sprite.Sprite):
         print("Resizing to " + str(scale))
         self.scale = scale
         self.update_shape()
+
 
 
 # Class to track player's ship and stats.

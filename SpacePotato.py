@@ -64,7 +64,8 @@ def init():
 
     # Create Player Object.
     window.player = PlayerShip(img=pyglet.resource.image("potato.png"), space=window.space)
-    window.player.change_scale(0.4)
+    window.player.change_scale(0.2)
+    window.player.change_scale(0.2)
     window.player.batch = window.foreground_batch
     window.register_for_update(window.player)
 
