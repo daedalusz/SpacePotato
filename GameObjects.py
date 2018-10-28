@@ -11,8 +11,9 @@ class GameObject(pyglet.sprite.Sprite):
         self.body = pymunk.Body(moment=0,mass=0)
         self.body.position = (100, 100)
         self.space = space
-        self.update_shape()
         self.mass = mass
+        self.update_shape()
+
 
         # TODO - Add a default shape?
 
@@ -46,9 +47,9 @@ class GameObject(pyglet.sprite.Sprite):
         new_shape.mass = self.mass
         new_shape.color = (255, 0, 0, 100)
 
-        if hasattr(self, 'shape') and self.shape in self.space.bodies:
-            self.space.remove(self.shape)
-            print("Removed Shape")
+        if hasattr(self, 'shape'):
+            self.space.remove(self.shape)  # NOTE: You MUST remove the shape from the space first or it will fail!
+            self.body.shapes.remove(self.shape)
 
         self.shape = new_shape
         self.add_to_space()
