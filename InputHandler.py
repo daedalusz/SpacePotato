@@ -30,3 +30,5 @@ class PlayerControl:
             player_ship.body.apply_impulse_at_local_point((0, -impulse), (0, 0))
             player_ship.thrust['DOWN'] = True
 
+        if self.keys[key.SPACE]:
+            player_ship.fire()
