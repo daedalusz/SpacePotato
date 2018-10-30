@@ -34,11 +34,13 @@ class GameWindow(pyglet.window.Window):
         self.foreground_batch.draw()
 
     def register_for_update(self, game_object):
-        self.UpdateList.append(game_object)
+        if game_object not in self.UpdateList:
+            self.UpdateList.append(game_object)
+        else:
+            print("Warning: Tried to register " + str(game_object) + " for update with GameWindow twice.")
 
     def remove_for_update(self, game_object):
         self.UpdateList.remove(game_object)
-        print(self.UpdateList)
 
     # Main update function that serves as the game's main loop.
     def master_update(self, dt):

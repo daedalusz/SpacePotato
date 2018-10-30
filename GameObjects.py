@@ -19,10 +19,13 @@ class GameObject(pyglet.sprite.Sprite):
         self.body.position = (100, 100)
         self.mass = mass
         self.update_shape()
+        # Sprite Stuff
         self.x = 0
         self.y = 0
         self.offsetx = 0
         self.offsety = 0
+        self.batch = self.window.foreground_batch
+        self.window.register_for_update(self)
 
     # Update x/y for sprite drawing. NOTE: This is part of the rendering loop
     def update(self, dt):
@@ -70,8 +73,7 @@ class GameObject(pyglet.sprite.Sprite):
         self.space.remove(self.shape)
         self.space.remove(self.body)
         self.window.remove_for_update(self)
-        #self.batch = None
-
+        self.batch = None
 
 
 # TODO - Make a 'Ship' class that players an enemies can be subclassed from?
