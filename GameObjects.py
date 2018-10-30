@@ -1,5 +1,6 @@
 import pyglet
 import pymunk
+import math
 import time
 from GameWindow import GameWindow
 
@@ -30,7 +31,7 @@ class GameObject(pyglet.sprite.Sprite):
     # Update x/y for sprite drawing. NOTE: This is part of the rendering loop
     def update(self, dt):
         # Update Sprite Position based on physics body location.
-
+        self.rotation = math.degrees(-self.body.angle)
         self.x = self.body.position.x - self.offsetx
         self.y = self.body.position.y - self.offsety
 

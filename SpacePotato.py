@@ -28,8 +28,17 @@ def init():
     # Kick off the Game's control loop.
     pyglet.clock.schedule_interval(window.master_update, 1 / 120.0)
 
-    return window
+    # Player Boundaries
+    boundaries = [pymunk.Segment(window.space.static_body, (0, 0), (0,768), 0.0),
+                  pymunk.Segment(window.space.static_body, (1024, 0), (1024, 768),0),
+                  pymunk.Segment(window.space.static_body, (0, 0), (1024, 0), 0),
+                  pymunk.Segment(window.space.static_body, (0, 768), (1024, 768), 0) ]
 
+    for l in boundaries:
+        l.friction = 0.1
+    window.space.add(boundaries)
+
+    return window
 
 GameWindow = init()
 pyglet.app.run()
