@@ -9,6 +9,10 @@ DEBUG = True
 class GameWindow(pyglet.window.Window):
 
     UpdateList = []
+    mouse_x = 0
+    mouse_y = 0
+    mouse_button = 0
+
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -17,14 +21,28 @@ class GameWindow(pyglet.window.Window):
         self.debug_batch = pyglet.graphics.Batch()
         self.player_control = PlayerControl(self)
         self.space = pymunk.Space()
-        self.space.damping = 0.1    # Effectively drag/friction for space... stupid but makes control feel nicer.
+        self.space.damping = 1.0    # Effectively drag/friction for space... stupid but makes control feel nicer.
 
         if DEBUG:
             self.debug_draw_options = pymunk.pyglet_util.DrawOptions()
             self.debug_draw_options.flags = pymunk.SpaceDebugDrawOptions.DRAW_SHAPES
             self.space.debug_draw(self.debug_draw_options)
 
+    def on_mouse_motion(self, x, y, dx, dy):
+        self.mouse_x = x
+        self.mouse_y = y
 
+    def on_mouse_drag(self, x, y, dx, dy, buttons, modifiers):
+        self.mouse_x = x
+        self.mouse_y = y
+
+    def on_mouse_press(self, x, y, button, modifiers):
+        print("Pressed")
+        self.mouse_button = button
+
+    def on_mouse_release(self, x, y, button, modifiers):
+        print("Released")
+        self.mouse_button = 0
 
     def on_draw(self):
         self.clear()

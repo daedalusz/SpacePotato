@@ -14,21 +14,22 @@ class PlayerControl:
 
         player_ship.thrust = {'UP': False, 'DOWN': False, 'LEFT': False, 'RIGHT': False}
 
-        if self.keys[key.LEFT]:
-            player_ship.body.apply_impulse_at_local_point((-impulse, 0), (0, 0))
+        if self.keys[key.LEFT] or self.keys[key.A]:
+            player_ship.body.apply_impulse_at_world_point((-impulse, 0), (0, 0))
             player_ship.thrust['LEFT'] = True
 
-        if self.keys[key.RIGHT]:
-            player_ship.body.apply_impulse_at_local_point((impulse, 0), (0, 0))
+        if self.keys[key.RIGHT] or self.keys[key.D]:
+            player_ship.body.apply_impulse_at_world_point((impulse, 0), (0, 0))
             player_ship.thrust['RIGHT'] = True
 
-        if self.keys[key.UP]:
-            player_ship.body.apply_impulse_at_local_point((0, impulse), (0, 0))
+        if self.keys[key.UP] or self.keys[key.W]:
+            player_ship.body.apply_impulse_at_world_point((0, impulse), (0, 0))
             player_ship.thrust['UP'] = True
 
-        if self.keys[key.DOWN]:
-            player_ship.body.apply_impulse_at_local_point((0, -impulse), (0, 0))
+        if self.keys[key.DOWN] or self.keys[key.S]:
+            player_ship.body.apply_impulse_at_world_point((0, -impulse), (0, 0))
             player_ship.thrust['DOWN'] = True
 
-        if self.keys[key.SPACE]:
+        if self.keys[key.SPACE] or self.window.mouse_button == pyglet.window.mouse.LEFT:
             player_ship.fire()
+
