@@ -4,6 +4,14 @@ from InputHandler import PlayerControl
 
 DEBUG = True
 
+CollisionGroups = {
+    "world": 1,
+    "player": 2,
+    "enemy": 3,
+    "player_weapon": 4,
+    "enemy_weapon": 5,
+    "enemy_weapon_hit": 6,
+}
 
 # Class to track our game window and environment
 class GameWindow(pyglet.window.Window):
@@ -12,7 +20,6 @@ class GameWindow(pyglet.window.Window):
     mouse_x = 0
     mouse_y = 0
     mouse_button = 0
-
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

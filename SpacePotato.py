@@ -5,6 +5,7 @@ from GameWindow import GameWindow
 from GameObjects import PlayerShip, Ship
 global GameWindow # TODO - Get rid of this horrible global variable. It may not be needed at all anyway.
 import pymunk.pyglet_util
+from Collisions import CollisionManager
 
 # Turn on debug shape rendering for pymunk
 DEBUG = True
@@ -50,7 +51,13 @@ def init():
 
     for l in boundaries:
         l.friction = 0.1
+        l.collision_type = CollisionManager.WORLD
     window.space.add(boundaries)
+
+    cm = CollisionManager(window)
+
+    for shape in window.player.body.shapes:
+        print(shape.collision_type)
 
     return window
 
