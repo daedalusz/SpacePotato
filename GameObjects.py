@@ -13,9 +13,8 @@ class GameObject(pyglet.sprite.Sprite):
     mass = 10
     moment = 0
 
-
     def __init__(self, *args, **kwargs):
-        self.window = kwargs.pop('window',None)
+        self.window = kwargs.pop('window', None)
         self.space = self.window.space
         img = kwargs['img']            # Adjust the image anchor to the centre of the image. MUST be done here.
         img.anchor_x = img.width // 2

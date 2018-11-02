@@ -6,6 +6,7 @@ from GameObjects import PlayerShip, Ship
 global GameWindow # TODO - Get rid of this horrible global variable. It may not be needed at all anyway.
 import pymunk.pyglet_util
 from Collisions import CollisionManager
+from Interface import HUD
 
 # Turn on debug shape rendering for pymunk
 DEBUG = True
@@ -22,12 +23,17 @@ def init():
     pyglet.resource.path = ["./resources/images", "./resources/sounds"]
     pyglet.resource.reindex()
 
+
     # Create Player Object.
     window.player = PlayerShip(img=pyglet.resource.image("potato.png"), window=window)
     window.player.change_scale(0.2)
     window.player.body.position = (100, 200)
-    ship_image = pyglet.resource.image("potato-green.png")
 
+    # Initialise HUD
+    hud = HUD(window.player, window)
+
+
+    ship_image = pyglet.resource.image("potato-green.png")
     ships = [Ship(img=ship_image, window=window), Ship(img=ship_image, window=window), Ship(img=ship_image, window=window)]
 
     ship_x = 500
@@ -44,10 +50,10 @@ def init():
     pyglet.clock.schedule_interval(window.master_update, 1 / 120.0)
 
     # Player Boundaries
-    boundaries = [pymunk.Segment(window.space.static_body, (0, 0), (0,768), 0.0),
-                  pymunk.Segment(window.space.static_body, (1024, 0), (1024, 768),0),
+    boundaries = [pymunk.Segment(window.space.static_body, (0, 0), (0, 768), 0.0),
+                  pymunk.Segment(window.space.static_body, (1024, 0), (1024, 768), 0),
                   pymunk.Segment(window.space.static_body, (0, 0), (1024, 0), 0),
-                  pymunk.Segment(window.space.static_body, (0, 768), (1024, 768), 0) ]
+                  pymunk.Segment(window.space.static_body, (0, 768), (1024, 768), 0)]
 
     for l in boundaries:
         l.friction = 0.1
@@ -58,6 +64,14 @@ def init():
 
     for shape in window.player.body.shapes:
         print(shape.collision_type)
+
+    # TODO - Build something that loads levels.
+    # Background
+    background = pyglet.resource.image("potato-chip.png")
+    background_sprite = pyglet.sprite.Sprite(img=background)
+    background_sprite.batch = window.background_batch
+    background_sprite.x = 500
+    background_sprite.y = 500
 
     return window
 

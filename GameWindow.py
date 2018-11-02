@@ -2,7 +2,7 @@ import pyglet
 import pymunk
 from InputHandler import PlayerControl
 
-DEBUG = True
+DEBUG = False
 
 CollisionGroups = {
     "world": 1,
@@ -25,6 +25,7 @@ class GameWindow(pyglet.window.Window):
         super().__init__(**kwargs)
         self.foreground_batch = pyglet.graphics.Batch()
         self.background_batch = pyglet.graphics.Batch()
+        self.hud_batch = pyglet.graphics.Batch()
         self.debug_batch = pyglet.graphics.Batch()
         self.player_control = PlayerControl(self)
         self.space = pymunk.Space()
@@ -56,7 +57,9 @@ class GameWindow(pyglet.window.Window):
         self.background_batch.draw()
         if DEBUG:
             self.space.debug_draw(self.debug_draw_options)
+
         self.foreground_batch.draw()
+        self.hud_batch.draw()
 
     def register_for_update(self, game_object):
         if game_object not in self.UpdateList:

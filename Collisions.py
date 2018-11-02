@@ -10,15 +10,13 @@ class CollisionManager:
     PLAYER_WEAP = 4
     ENEMY_WEAP = 5
 
-
     def __init__(self, window):
         self.window = window
         self.space = window.space
 
-        #Set up Collision Handlers
-
+        # Set up Collision Handlers
         h_player_world = self.space.add_collision_handler(self.PLAYER, self.WORLD)
-        h_player_world.post_solve = self.collide_player_world   #Using post_solve so we get KE numbers
+        h_player_world.post_solve = self.collide_player_world   # Using post_solve so we get KE numbers
 
         h_player_enemy = self.space.add_collision_handler(self.PLAYER, self.ENEMY)
         h_player_enemy.post_solve = self.collide_player_enemy
@@ -28,6 +26,9 @@ class CollisionManager:
 
         h_player_weap_enemy = self.space.add_collision_handler(self.PLAYER_WEAP, self.ENEMY)
         h_player_weap_enemy.post_solve = self.collide_player_weap_enemy
+
+        h_player_weap_player = self.space.add_collision_handler(self.PLAYER_WEAP, self.PLAYER)
+        h_player_weap_player.begin = self.collide_player_weap_player
 
 
         print("CM Initialised")
@@ -59,14 +60,16 @@ class CollisionManager:
         print("WORLD HIT")
         return True
 
-
     def collide_enemy_world(self, arb, space, data):
         return True
 
+    def collide_player_weap_player(self, arb, space, data):
+        return False
 
 # Get a handle on the GameObject via it's body.
     def get_obj_by_body(self, body):
         # TODO - This seems ugly and inefficient. Make it better.
         for game_object in self.window.UpdateList:
-            if game_object.body == body:
-                return game_object
+            if hasattr(game_object, 'body'):    # HUD is also in here at the moment.
+                if game_object.body == body:
+                    return game_object
