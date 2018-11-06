@@ -67,11 +67,12 @@ def init():
 
     # TODO - Build something that loads levels.
     # Background
-    background = pyglet.resource.image("potato-chip.png")
+    background = pyglet.resource.image("background1.png")
     background_sprite = pyglet.sprite.Sprite(img=background)
     background_sprite.batch = window.background_batch
-    background_sprite.x = 500
-    background_sprite.y = 500
+    background_sprite.x = 0
+    background_sprite.y = 0
+    window.background = background_sprite
 
     return window
 
