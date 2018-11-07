@@ -134,6 +134,10 @@ class Ship(GameObject):
         if self.hp <= 0:
             self.remove()
 
+    def remove(self):
+        self.window.effects.explosion(self.position, 400)
+        super().remove()
+
 
 # TODO - Make a 'Ship' class that players an enemies can be subclassed from?
 # Class to track player's ship and stats.
@@ -230,6 +234,7 @@ class Bullet(Projectile):
         self.body.apply_impulse_at_local_point(self.thrust, (0, 0))
 
     def touchEnemy(self, enemy, ke):
+        self.window.effects.emit_sparks(self.position, 20)
         self.remove()
 
 

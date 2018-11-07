@@ -1,6 +1,8 @@
 import pyglet
 import pymunk
+from lepton import default_system
 from InputHandler import PlayerControl
+from pyglet.gl import *
 
 DEBUG = False
 
@@ -31,6 +33,13 @@ class GameWindow(pyglet.window.Window):
         self.space = pymunk.Space()
         self.space.damping = 1.0    # Effectively drag/friction for space... stupid but makes control feel nicer.
 
+        glEnable(GL_BLEND)
+        glShadeModel(GL_SMOOTH)
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE)
+        glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+        glDisable(GL_DEPTH_TEST)
+
+
         if DEBUG:
             self.debug_draw_options = pymunk.pyglet_util.DrawOptions()
             self.debug_draw_options.flags = pymunk.SpaceDebugDrawOptions.DRAW_SHAPES
@@ -55,11 +64,15 @@ class GameWindow(pyglet.window.Window):
     def on_draw(self):
         self.clear()
         self.background_batch.draw()
+        glLoadIdentity()
+
         if DEBUG:
             self.space.debug_draw(self.debug_draw_options)
 
         self.foreground_batch.draw()
         self.hud_batch.draw()
+        default_system.draw()
+
 
     def register_for_update(self, game_object):
         if game_object not in self.UpdateList:
@@ -74,6 +87,8 @@ class GameWindow(pyglet.window.Window):
     def master_update(self, dt):
         # Advance our physics simulation.
         self.space.step(dt)
+        # Advance Particle system
+        default_system.update(dt)
 
         for game_object in self.UpdateList:
             game_object.update(dt)

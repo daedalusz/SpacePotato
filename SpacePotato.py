@@ -1,4 +1,5 @@
 import pyglet
+
 import pymunk
 from InputHandler import PlayerControl
 from GameWindow import GameWindow
@@ -7,10 +8,10 @@ global GameWindow # TODO - Get rid of this horrible global variable. It may not 
 import pymunk.pyglet_util
 from Collisions import CollisionManager
 from Interface import HUD
+from Effects import Effects
 
 # Turn on debug shape rendering for pymunk
 DEBUG = True
-
 
 
 # Initialise Things #
@@ -22,6 +23,9 @@ def init():
 
     pyglet.resource.path = ["./resources/images", "./resources/sounds"]
     pyglet.resource.reindex()
+
+    # Load Effects System
+    window.effects = Effects(window)
 
 
     # Create Player Object.
